@@ -5,6 +5,7 @@
 .DS_Store
 __MACOSX
 
+out
 
 # Compiled Object files, Static and Dynamic libs (Shared Objects)
 *.o
