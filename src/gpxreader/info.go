@@ -1,43 +1,39 @@
-
+/**
+	GPX reader
+*/
 
 package gpxreader
 
-
 import (
-	"io"
-	"os"
+	"io/ioutil"
 	"encoding/xml"
 )
 
-
-// metadata type
-type meta struct {
-	creator string
-	time string
-	name string
+type Gpx struct {
+	Creator string `xml:"creator,attr"`
+	Time string `xml:"metadata>time"`
+	Title string `xml:"trk>name"`
+	TrackPoints []TrackPoint `xml:"trk>trkseg>trkpt"`
 }
 
+// represents each trackpoint
+type TrackPoint struct {
 
-// read a files contents
-func readfile(file string) {
+}
 
-	f, err := os.Open(file)
+// string representation of the Gpx file
+func (g Gpx) String() string {
+	return g.Title
+}
 
+func GpxFile(fileName string) (g Gpx) {
+
+	data, err := ioutil.ReadFile(fileName)
 	if err != nil {
 		panic(err)
 	}
 
-	defer f.Close()
-
-	var m meta
-	xml.Unmarshal(f, &m)
-
-	return
-}
-
-
-// get meta information
-func Meta(dataFile string) (m meta) {
+	xml.Unmarshal(data, &g)
 
 	return
 }

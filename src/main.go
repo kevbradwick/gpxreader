@@ -7,8 +7,17 @@
  */
 package main
 
-import "fmt"
+
+import (
+	"fmt"
+	"gpxreader"
+)
+
 
 func main() {
-	fmt.Printf("Hello world!")
+
+	file := "./fixtures/data_001.gpx"
+	gpx := gpxreader.GpxFile(file)
+	fmt.Print(gpx)
+
 }
