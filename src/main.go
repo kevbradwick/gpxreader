@@ -18,6 +18,7 @@ func main() {
 
 	file := "./fixtures/data_001.gpx"
 	gpx := gpxreader.GpxFile(file)
-	fmt.Print(gpx)
+	fmt.Println(gpx)
+	fmt.Println(gpx.MaxHeartRate())
 
 }

@@ -7,6 +7,7 @@ package gpxreader
 import (
 	"io/ioutil"
 	"encoding/xml"
+	"fmt"
 )
 
 type Gpx struct {
@@ -16,14 +17,45 @@ type Gpx struct {
 	TrackPoints []TrackPoint `xml:"trk>trkseg>trkpt"`
 }
 
-// represents each trackpoint
-type TrackPoint struct {
-
-}
-
 // string representation of the Gpx file
 func (g Gpx) String() string {
 	return g.Title
+}
+
+// represents each trackpoint
+type TrackPoint struct {
+	Lat float64 `xml:"lat,attr"`
+	Lon float64 `xml:"lon,attr"`
+	Elevation float32 `xml:"ele"`
+	Time string `xml:"time"`
+	Temperature int `xml:"extensions>TrackPointExtension>atemp"`
+	HeartRate int `xml:"extensions>TrackPointExtension>hr"`
+	Cadence int `xml:"extensions>TrackPointExtension>cad"`
+}
+
+// string representation of the Gpx file
+func (t TrackPoint) String() string {
+	return fmt.Sprintf("Lat: %v, Lon: %v", t.Lat, t.Lon)
+}
+
+// get the maximum heart rate
+func (g Gpx) MaxHeartRate() (hr int) {
+
+	hr = 0
+
+	for _, pt := range g.TrackPoints {
+		if pt.HeartRate > hr {
+			hr = pt.HeartRate
+		}
+	}
+
+	return
+}
+
+// get the average heart rate
+func (g Gpx) AverageHeartRate() (hr int) {
+
+	return
 }
 
 func GpxFile(fileName string) (g Gpx) {
