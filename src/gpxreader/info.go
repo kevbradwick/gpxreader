@@ -40,31 +40,33 @@ func (t TrackPoint) String() string {
 
 // get the maximum heart rate
 func (g Gpx) MaxHeartRate() (hr int) {
-
 	hr = 0
-
 	for _, pt := range g.TrackPoints {
 		if pt.HeartRate > hr {
 			hr = pt.HeartRate
 		}
 	}
-
 	return
 }
 
 // get the average heart rate
 func (g Gpx) AverageHeartRate() (hr int) {
 
+  total := 0
+  for _, pt := range g.TrackPoints {
+    total += pt.HeartRate
+  }
+
+  hr = total / len(g.TrackPoints)
 	return
 }
 
 func GpxFile(fileName string) (g Gpx) {
-
+  
 	data, err := ioutil.ReadFile(fileName)
 	if err != nil {
 		panic(err)
 	}
-
 	xml.Unmarshal(data, &g)
 
 	return

@@ -16,9 +16,9 @@ import (
 
 func main() {
 
-	file := "./fixtures/data_001.gpx"
+	file := "/Users/bradwk01/IdeaProjects/gpxreader/fixtures/data_001.gpx"
 	gpx := gpxreader.GpxFile(file)
 	fmt.Println(gpx)
-	fmt.Println(gpx.MaxHeartRate())
+	fmt.Println(gpx.AverageHeartRate())
 
 }
