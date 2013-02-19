@@ -19,7 +19,16 @@ type Gpx struct {
 
 // string representation of the Gpx file
 func (g Gpx) String() string {
-	return g.Title
+
+  msg := `
+GPX Reader v0.1.0
+Creator:    %s
+Time:       %s
+Title:      %s
+Max HR:     %v
+Avg HR:     %v
+`
+	return fmt.Sprintf(msg, g.Creator, g.Time, g.Title, g.MaxHeartRate(), g.AverageHeartRate())
 }
 
 // represents each trackpoint
@@ -62,9 +71,10 @@ func (g Gpx) AverageHeartRate() (hr int) {
 }
 
 func GpxFile(fileName string) (g Gpx) {
-  
+
 	data, err := ioutil.ReadFile(fileName)
 	if err != nil {
+    fmt.Printf("FileName: %s", fileName)
 		panic(err)
 	}
 	xml.Unmarshal(data, &g)
