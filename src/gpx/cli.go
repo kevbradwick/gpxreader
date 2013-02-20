@@ -9,18 +9,24 @@ package main
 
 import (
   "os"
-  "gpxreader"
+  "gpx"
+  "flag"
   "fmt"
 )
 
 func main() {
 
-  if len(os.Args) != 2 {
-    fmt.Println("Please specify a file name")
+  var file = flag.String("filename", "", "Path to GPX file")
+
+  flag.Parse()
+  _, err := os.Stat(*file)
+  if err != nil {
+    flag.Usage()
     os.Exit(1)
   }
 
-  gpx := gpxreader.GpxFile(os.Args[1])
-  fmt.Println(gpx)
+  gpx := gpx.GpxFile(*file)
+  fmt.Print(gpx)
+
 }
 

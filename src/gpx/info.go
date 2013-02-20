@@ -2,7 +2,7 @@
 	GPX reader
 */
 
-package gpxreader
+package gpx
 
 import (
   "io/ioutil"
@@ -11,15 +11,15 @@ import (
   "time"
 )
 
-type Gpx struct {
+type gpx struct {
   Creator     string `xml:"creator,attr"`
   Time        time.Time `xml:"metadata>time"`
   Title       string `xml:"trk>name"`
-  TrackPoints []TrackPoint `xml:"trk>trkseg>trkpt"`
+  TrackPoints []trackPoint `xml:"trk>trkseg>trkpt"`
 }
 
 // string representation of the Gpx file
-func (g Gpx) String() string {
+func (g gpx) String() string {
 
   msg := `
 GPX Reader v0.1.0
@@ -39,7 +39,7 @@ Cadence (Avg):    %v
 }
 
 // represents each trackpoint
-type TrackPoint struct {
+type trackPoint struct {
   Lat         float64 `xml:"lat,attr"`
   Lon         float64 `xml:"lon,attr"`
   Elevation   float32 `xml:"ele"`
@@ -50,12 +50,12 @@ type TrackPoint struct {
 }
 
 // string representation of the Gpx file
-func (t TrackPoint) String() string {
+func (t trackPoint) String() string {
   return fmt.Sprintf("Lat: %v, Lon: %v", t.Lat, t.Lon)
 }
 
 // get the maximum heart rate
-func (g Gpx) HeartRate() (max, avg int) {
+func (g gpx) HeartRate() (max, avg int) {
   max = 0
   total := 0
   for _, pt := range g.TrackPoints {
@@ -68,7 +68,7 @@ func (g Gpx) HeartRate() (max, avg int) {
   return
 }
 
-func (g Gpx) ElevationGain() (gain float32) {
+func (g gpx) ElevationGain() (gain float32) {
 
   el := g.TrackPoints[0].Elevation
 
@@ -85,7 +85,7 @@ func (g Gpx) ElevationGain() (gain float32) {
 
 // Get the cadence stats.
 // returns the average and max values
-func (g Gpx) Cadence() (avg, max int) {
+func (g gpx) Cadence() (avg, max int) {
 
   count, total := 0, 0
   for _, pt := range g.TrackPoints {
@@ -104,7 +104,7 @@ func (g Gpx) Cadence() (avg, max int) {
   return
 }
 
-func GpxFile(fileName string) (g Gpx) {
+func GpxFile(fileName string) (g gpx) {
 
   data, err := ioutil.ReadFile(fileName)
   if err != nil {
